@@ -6,6 +6,10 @@ Checksum calculation routines for both 'classic' (according to LIN specification
 
 In addition to the library, a test suite program is also included.
 
+# Requirements
+
+Requires SDCC version 4.1.10 or greater. The inline assembly code present in this library is written for STM8 calling convention version 1 only, which was introduced and became the default in SDCC version 4.1.10.
+
 # Building
 
 Run `make` in the code's root folder. Some arguments may be required; see below. The output `.lib` file is placed in the `lib` folder.
