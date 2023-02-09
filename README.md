@@ -16,7 +16,7 @@ Run `make` in the code's root folder. Some arguments may be required; see below.
 
 By default, without specifying any further options to `make`, the library compiles for the medium memory model.
 
-To compile for the large memory model (i.e. SDCC's `--model-large` option), give an additional argument of `MODEL=large` to `make`. If your code that you will be linking with is compiled using `--model-large`, then you will need to build this library as such too.
+To compile for the large memory model (i.e. SDCC's `--model-large` option), give an additional argument of `MODEL=large` to `make`. If your code that you will be linking with is compiled using `--model-large` (typically the case for STM8 devices with 32 kB or more of flash), then you will need to build this library as such too.
 
 # Usage
 
@@ -43,11 +43,11 @@ Verifies that an 'enhanced' checksum matches the given data and protected ID. Ta
 
 ### `uint8_t lin_get_protected_id(const uint8_t fid)`
 
-Constructs a protected identifier value from the given frame identifier `fid` by calculating the two necessary parity bits and appending them as the most-significant bits to the frame ID. Any frame ID value greater than 63 (0x3F) will be truncated to that value. Returns the protected ID value.
+Constructs a protected identifier value from the given frame identifier `fid` by calculating the two necessary parity bits and appending them as the most-significant bits to the frame ID. Any `fid` value greater than 63 (0x3F) will be truncated to that value. Returns the protected ID value.
 
 ## Notes
 
-* The checksum calculation functions do not impose or respect any LIN frame length limitations on the data buffer they calculate the checksum from. For example, if your data resides in a buffer of size 20, but you wish to calculate a checksum for a LIN frame carrying 8 data bytes, then you should pass a length of 8. Similarly, if your buffer is of size 8, but the frame you'll be sending is 4 data bytes, pass a length of 4.
+* The checksum calculation and verification functions do not impose or respect any LIN frame length limitations on the data buffer they read from. For example, if your data resides in a buffer of size 20, but you wish to calculate a checksum for a LIN frame carrying 8 data bytes, then you should pass a length of 8. Similarly, if your buffer is of size 8, but the frame you'll be sending is 4 data bytes, pass a length of 4.
 * A function to verify the parity of a protected ID is not provided because STM8 UARTs that are LIN-capable incorporate protected ID parity error checking in hardware, so the existance of such a function is not necessary.
 
 ## Example
@@ -71,7 +71,7 @@ void send() {
 void receive() {
 	uint8_t frame_pid; /* received protected ID */
     uint8_t frame_data[8]; /* received data */
-	size_t frame_length; /* number of data bytes in frame */
+	uint8_t frame_length; /* number of data bytes in frame */
 	uint8_t frame_checksum; /* received checksum */
 	
 	bool verified_ok = lin_verify_checksum_enhanced(frame_checksum, frame_pid, frame_data, frame_length);
