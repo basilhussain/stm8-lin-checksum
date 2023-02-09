@@ -60,7 +60,7 @@ Constructs a protected identifier value from the given frame identifier `fid` by
 
 void send() {
 	uint8_t frame_id = 0x3F;
-    uint8_t frame_data[8] = { 0x4A, 0x55, 0x93, 0xE5 };
+	uint8_t frame_data[8] = { 0x4A, 0x55, 0x93, 0xE5 };
 	
 	uint8_t protected_id = lin_get_protected_id(frame_id);
 	uint8_t checksum = lin_calculate_checksum_enhanced(protected_id, frame_data, 4);
@@ -70,7 +70,7 @@ void send() {
 
 void receive() {
 	uint8_t frame_pid; /* received protected ID */
-    uint8_t frame_data[8]; /* received data */
+	uint8_t frame_data[8]; /* received data */
 	uint8_t frame_length; /* number of data bytes in frame */
 	uint8_t frame_checksum; /* received checksum */
 	
@@ -90,7 +90,7 @@ A test suite program, `main.c`, is included in the source repository. It is desi
 
 The program will run tests using a variety of input data and validate the correct operation of all library functions. A string of "PASS" or "FAIL" is given for each test case. At the conclusion of all tests, total pass/fail counts will be output.
 
-To build the test program, run `make test`. If you previously built the library with the `MODEL=large` argument, pass it here too, otherwise run `make clean` before running `make test`.
+To build the test program, run `make test`. If you previously built the library with the `MODEL=large` argument, pass it here too, or run `make clean` before running `make test`.
 
 To then run the test program in the simulator, run `make sim`.
 
