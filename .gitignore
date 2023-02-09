@@ -15,6 +15,7 @@
 *.lib
 bin/*
 obj/*
+lib/*
 
 # Other stuff
 *.zip

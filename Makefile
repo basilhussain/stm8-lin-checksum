@@ -48,15 +48,15 @@ all: test
 test: $(BINARY)
 library: $(LIBRARY)
 
-$(LIBRARY): $(LIBOBJ) $(LIBDIR)
+$(LIBRARY): $(LIBOBJ) | $(LIBDIR)
 	$(AR) $(AFLAGS) -r $@ $(LIBOBJ)
 
-$(BINARY): $(LIBRARY) $(TESTOBJ) $(BINDIR)
+$(BINARY): $(LIBRARY) $(TESTOBJ) | $(BINDIR)
 	$(CC) $(CFLAGS) --out-fmt-ihx -o $@ -l $(LIBRARY) $(TESTOBJ)
 
-$(LIBOBJ): $(OBJDIR) $(LIBHEAD) $(LIBSRC)
+$(LIBOBJ): $(LIBHEAD) $(LIBSRC) | $(OBJDIR)
 
-$(TESTOBJ): $(OBJDIR) $(TESTHEAD) $(TESTSRC)
+$(TESTOBJ): $(TESTHEAD) $(TESTSRC) | $(OBJDIR)
 
 $(OBJDIR)/%.rel: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
