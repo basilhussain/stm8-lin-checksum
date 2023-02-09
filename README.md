@@ -8,11 +8,11 @@ In addition to the library, a test suite program is also included.
 
 # Building
 
-Run `make library` in the code's root folder. Some arguments may be required; see below. The output `.lib` file is placed in the `lib` folder.
+Run `make` in the code's root folder. Some arguments may be required; see below. The output `.lib` file is placed in the `lib` folder.
 
 By default, without specifying any further options to `make`, the library compiles for the medium memory model.
 
-To compile for the large memory model (i.e. SDCC's `--model-large` option), give an additional argument of `MODEL=large` to `make`. If *your* code is compiled with `--model-large`, then you will need to build this library as such.
+To compile for the large memory model (i.e. SDCC's `--model-large` option), give an additional argument of `MODEL=large` to `make`. If your code that you will be linking with is compiled using `--model-large`, then you will need to build this library as such too.
 
 # Usage
 

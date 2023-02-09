@@ -44,9 +44,9 @@ BINARY = $(BINDIR)/test.ihx
 
 .PHONY: library test all clean sim
 
-all: test
-test: $(BINARY)
+all: library
 library: $(LIBRARY)
+test: $(BINARY)
 
 $(LIBRARY): $(LIBOBJ) | $(LIBDIR)
 	$(AR) $(AFLAGS) -r $@ $(LIBOBJ)
