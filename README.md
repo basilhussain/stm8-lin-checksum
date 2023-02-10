@@ -1,6 +1,6 @@
 # Overview
 
-This is a library for the STM8 microcontroller and [SDCC](http://sdcc.sourceforge.net/) compiler providing routines for calculating and verifying [LIN bus](https://en.wikipedia.org/wiki/Local_Interconnect_Network) checksums, as well as calculating parity bits to form protected IDs.
+This is a library for the STM8 microcontroller and [SDCC](http://sdcc.sourceforge.net/) compiler providing routines for calculating and verifying [LIN bus](https://en.wikipedia.org/wiki/Local_Interconnect_Network) checksums, as well as calculating and verifying parity bits of protected frame IDs.
 
 Checksum calculation routines for both 'classic' (according to LIN specification version 1.x) and 'enhanced' (specification version 2.x) checksums are supported.
 
@@ -45,10 +45,14 @@ Verifies that an 'enhanced' checksum matches the given data and protected ID. Ta
 
 Constructs a protected identifier value from the given frame identifier `fid` by calculating the two necessary parity bits and appending them as the most-significant bits to the frame ID. Any `fid` value greater than 63 (0x3F) will be wrapped at that value (e.g. 65 → 1). Returns the protected ID value.
 
+### `bool lin_verify_protected_id(const uint8_t pid, uint8_t *fid_out)`
+
+Verifies that the parity bits of the given protected ID are correct for its encapsulated frame ID. Takes as input a protected ID value `pid`, and outputs a frame ID via the pointer `fid_out`. The `fid_out` argument is non-optional and a valid pointer must always be provided. The frame ID is also output regardless of parity correctness. Returns a boolean value indicating whether the parity is correct.
+
 ## Notes
 
 * The checksum calculation and verification functions do not impose or respect any LIN frame length limitations on the data buffer they read from. For example, if your data resides in a buffer of size 20, but you wish to calculate a checksum for a LIN frame carrying 8 data bytes, then you should pass a length of 8. Similarly, if your buffer is of size 8, but the frame you'll be sending is 4 data bytes, pass a length of 4.
-* A function to verify the parity of a protected ID is not provided because STM8 UARTs that are LIN-capable incorporate protected ID parity error checking in hardware, so the existance of such a function is not necessary.
+* Use of the `lin_verify_protected_id` function is not typically needed because STM8 UARTs that are LIN-capable already incorporate protected ID parity error checking in hardware. However, the function is included in the library not only for completeness, but also for the scenario where a UART is being used that does not possess LIN features.
 
 ## Example
 

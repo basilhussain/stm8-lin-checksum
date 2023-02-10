@@ -35,5 +35,6 @@ extern uint8_t lin_calculate_checksum_enhanced(const uint8_t pid, const void *da
 extern bool lin_verify_checksum_classic(const uint8_t cksum, const void *data, const uint8_t data_len);
 extern bool lin_verify_checksum_enhanced(const uint8_t cksum, const uint8_t pid, const void *data, const uint8_t data_len);
 extern uint8_t lin_get_protected_id(const uint8_t fid);
+extern bool lin_verify_protected_id(const uint8_t pid, uint8_t *fid_out);
 
 #endif // LIN_CHECKSUM_H__

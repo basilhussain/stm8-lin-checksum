@@ -240,7 +240,7 @@ static void test_verify_enhanced(test_result_t *results) {
 	}
 }
 
-static void test_protected_id(test_result_t *results) {
+static void test_get_protected_id(test_result_t *results) {
 	static const struct {
 		uint8_t fid;
 		uint8_t expected_pid;
@@ -272,6 +272,40 @@ static void test_protected_id(test_result_t *results) {
 	}
 }
 
+static void test_verify_protected_id(test_result_t *results) {
+	static const struct {
+		uint8_t pid;
+		uint8_t expected_fid;
+		bool expected_result;
+	} tests[] = {
+		{ 0x80, 0x00, true },
+		{ 0xBF, 0x3F, true },
+		{ 0xC1, 0x01, true },
+		{ 0x50, 0x10, true },
+		{ 0xA8, 0x28, true },
+		{ 0x1F, 0x1F, true },
+		{ 0x08, 0x08, true },
+		// Invalid protected IDs (plus proper PID):
+		{ 0x88, 0x08, false }, // 0x08
+		{ 0xAA, 0x2A, false }, // 0x6A
+		{ 0xA9, 0x29, false }, // 0xE9
+	};
+	uint8_t fid;
+	bool result, pass;
+	
+	print_test_name();
+	
+	for(size_t i = 0; i < (sizeof(tests) / sizeof(tests[0])); i++) {
+		print_test_num(i);
+		printf("pid = 0x%02X\n", tests[i].pid);
+		result = lin_verify_protected_id(tests[i].pid, &fid);
+		pass = (result == tests[i].expected_result && fid == tests[i].expected_fid);
+		printf("expected = %u / 0x%02X, result = %u / 0x%02X\n", tests[i].expected_result, tests[i].expected_fid, result, fid);
+		print_pass_fail(pass);
+		count_test_result(pass, results);
+	}
+}
+
 void main(void) {
 	test_result_t results = { 0, 0 };
 
@@ -281,7 +315,8 @@ void main(void) {
 	test_calculate_enhanced(&results);
 	test_verify_classic(&results);
 	test_verify_enhanced(&results);
-	test_protected_id(&results);
+	test_get_protected_id(&results);
+	test_verify_protected_id(&results);
 
 	puts(hrule_str);
 
