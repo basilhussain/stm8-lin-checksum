@@ -43,7 +43,7 @@ Verifies that an 'enhanced' checksum matches the given data and protected ID. Ta
 
 ### `uint8_t lin_get_protected_id(const uint8_t fid)`
 
-Constructs a protected identifier value from the given frame identifier `fid` by calculating the two necessary parity bits and appending them as the most-significant bits to the frame ID. Any `fid` value greater than 63 (0x3F) will be truncated to that value. Returns the protected ID value.
+Constructs a protected identifier value from the given frame identifier `fid` by calculating the two necessary parity bits and appending them as the most-significant bits to the frame ID. Any `fid` value greater than 63 (0x3F) will be wrapped at that value (e.g. 65 → 1). Returns the protected ID value.
 
 ## Notes
 
